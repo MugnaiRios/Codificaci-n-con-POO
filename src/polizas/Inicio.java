@@ -8,7 +8,7 @@ public class Inicio {
 
     //Atributods
    private Bienvenida vista;
-    private Controlador controlador;
+   private Controlador controlador;
 
     //consttructor
     Inicio() {

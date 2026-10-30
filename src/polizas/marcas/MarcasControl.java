@@ -29,18 +29,29 @@ public class MarcasControl {
 
         mv.btn_a.addActionListener(
                 e -> {
-                    Object marca = new Marcas(0, mv.txt1.getText());
-                    JOptionPane.showMessageDialog(null, mm.create(marca));
-                    mv.actualizarVista(mm.read());
+                    String nombreMarca = mv.txt1.getText().trim();
+                    if (!nombreMarca.isEmpty()) {
+                        Object marca = new Marcas(0, nombreMarca);
+
+                        JOptionPane.showMessageDialog(null, mm.create(marca));
+                        mv.actualizarVista(mm.read());
+                    } else {
+                        javax.swing.JOptionPane.showMessageDialog(null, "Marca no valida");
+                    }
                 }
         );
         mv.btnmd.addActionListener(
                 e -> {
                     int fila = mv.tabla.getSelectedRow();
+
                     Object valorId = mv.tabla.getValueAt(fila, 0);
-                    int id = Integer.parseInt(valorId.toString());
-                    int resp = mm.delate(id);
-                    mv.actualizarVista(mm.read());
+                    if (valorId != null) {
+                        int id = Integer.parseInt(valorId.toString());
+                        int resp = mm.delate(id);
+                        mv.actualizarVista(mm.read());
+                    } else {
+                        javax.swing.JOptionPane.showMessageDialog(null, "No seleccionaste nada para eliminar");
+                    }
                 }
         );
 
@@ -49,16 +60,23 @@ public class MarcasControl {
 
             Object valorId = mv.tabla.getValueAt(fila, 0);
 
-            int id = Integer.parseInt(valorId.toString());
-            String nuevoNombre = mv.txt1.getText();
+            if (valorId != null) {
 
-            Marcas marcaEditar = new Marcas(id, nuevoNombre);
-            int resp = mm.update(marcaEditar);
-            mv.actualizarVista(mm.read());
+                int id = Integer.parseInt(valorId.toString());
+                String nuevoNombre = mv.txt1.getText();
 
-            javax.swing.JOptionPane.showMessageDialog(null, "El registro seleccionado no tiene un ID válido.");
+                if (!nuevoNombre.isEmpty()) {
+                    Marcas marcaEditar = new Marcas(id, nuevoNombre);
+                    int resp = mm.update(marcaEditar);
+                    mv.actualizarVista(mm.read());
+                } else {
 
-            javax.swing.JOptionPane.showMessageDialog(null, "Por favor, selecciona una fila de la tabla primero.");
+                    javax.swing.JOptionPane.showMessageDialog(null, "Nombre no valido.");
+                }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "No seleccionaste ningun campo para actualixar");
+            }
+
         });
 
         mv.tabla.addMouseListener(new MouseAdapter() {
